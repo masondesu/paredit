@@ -107,7 +107,7 @@ def paredit_forward_delete(view, edit):
 def paredit_backward_delete(view, edit):
 	paredit_delete(view, edit, False)
 
-def paredit_kill_abstract(view, edit, expression):
+def paredit_kill_abstract(view, edit, expression, emulate_osx_native_kill=False):
 	def f(region):
 		if not region.a == region.b:
 			return shared.erase_region(view, edit, region)
@@ -123,12 +123,22 @@ def paredit_kill_abstract(view, edit, expression):
 				view.erase(edit, sublime.Region(point, rb - 1))
 				return point
 		else:
+			if emulate_osx_native_kill:
+				# Emulate the default ctrl+k by killing to the end of line
+				# since we're not inside of an expression
+				if view.substr(point) == "\n":
+					view.erase(edit, sublime.Region(point, view.line(point).b+1))
+				else:
+					view.erase(edit, sublime.Region(point, view.line(point).b))
 			return point
 
 	shared.edit_selections(view, f)
 
 def paredit_kill(view, edit):
 	paredit_kill_abstract(view, edit, False)
+
+def paredit_kill_osx(view, edit):
+	paredit_kill_abstract(view, edit, False, True)
 
 def paredit_kill_expression(view, edit):
 	paredit_kill_abstract(view, edit, True)
@@ -170,6 +180,10 @@ class Paredit_backward_deleteCommand(sublime_plugin.TextCommand):
 class Paredit_killCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		paredit_kill(self.view, edit)
+
+class Paredit_kill_osxCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		paredit_kill_osx(self.view, edit)
 
 class Paredit_kill_expressionCommand(sublime_plugin.TextCommand):
 	def run(self, edit):

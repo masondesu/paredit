@@ -73,4 +73,12 @@
 	"command": "paredit_join_sexp",
 	"context": [{"key": "should_paredit"}]
  }
+
+////
+//// Override the default paredit_kill
+,{
+	"keys": ["ctrl+k"],
+	"command": "paredit_kill_osx",
+	"context": [{"key": "should_paredit"}]
+ }
 ]
