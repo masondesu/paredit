@@ -64,12 +64,18 @@
 ,{
 	"keys": ["ctrl+k"],
 	"command": "paredit_kill",
-	"context": [{"key": "should_paredit"}]
+	"context": [
+		{"key": "should_paredit"},
+		{"key": "inside_expression"}
+	]
  }
 ,{
 	"keys": ["ctrl+shift+k"],
 	"command": "paredit_kill_expression",
-	"context": [{"key": "should_paredit"}]
+	"context": [
+		{"key": "should_paredit"},
+		{"key": "inside_expression"}
+	]
  }
 ,{
 	"keys": ["alt+delete"],

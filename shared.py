@@ -353,10 +353,17 @@ def should_paredit(view):
 	        (is_correct_syntax(view) or
 	         is_correct_file_ending(view)))
 
+def inside_expression(view):
+	return get_expression(view, view.sel()[0].a) != (None, None)
+
 class PareditListenerCommand(sublime_plugin.EventListener):
 	def on_query_context(self, view, key, operator, operand, match_all):
 		if key == "should_paredit":
 			return should_paredit(view)
+
+		if key == "inside_expression":
+			return inside_expression(view)
+
 
 class Paredit_toggle_enableCommand(sublime_plugin.ApplicationCommand):
 	def run(self):
