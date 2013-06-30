@@ -364,7 +364,6 @@ class PareditListenerCommand(sublime_plugin.EventListener):
 		if key == "inside_expression":
 			return inside_expression(view)
 
-
 class Paredit_toggle_enableCommand(sublime_plugin.ApplicationCommand):
 	def run(self):
 		set_enabled(not is_enabled())
